@@ -37,7 +37,7 @@ var grailsTimeout = (function (grailsTimeout) {
 	var ALERT_ON_COUNTER = IDLE_TIMEOUT_IN_SECONDS - ALERT_ON_SECONDS_BEFORE_TIMEOUT;
 	var REDIRECT_UPON_TIMEOUT = ${grailsApplication.config.timeout.get("redirectUponTimeout", true)};
 	var REDIRECT_URL = "${grailsApplication.config.timeout.redirectUrl?:''}";
-	var LOGOUT_URL = "${grailsApplication.config.timeout.logoutUrl?:'logout'}";
+	var LOGOUT_URL = "${grailsApplication.config.timeout.logoutUrl?:'../logout'}";
 	var _idleSecondsCounter = 0;
 
 	var title = "${message(code: 'timeout.title', default: 'WARNING')}";
@@ -58,14 +58,18 @@ var grailsTimeout = (function (grailsTimeout) {
 
 	function checkIdleTime() {
     	_idleSecondsCounter++;
-    	var oPanel = document.getElementById("SecondsUntilExpire");
-    	if (oPanel)
-        	oPanel.innerHTML = (IDLE_TIMEOUT_IN_SECONDS - _idleSecondsCounter) + "";
+
     	if (_idleSecondsCounter===ALERT_ON_COUNTER) {
     		message = message.replace("${CURRENT_TIME_PLACEHOLDER}", getCurrentTimeInHHMMSSFormat());
     		window.focus();
         	grailsTimeout.showAlert();
     	}
+
+        var timeoutCounter = document.getElementById("timeoutCounter");
+        if (timeoutCounter) {
+            var counter = IDLE_TIMEOUT_IN_SECONDS - _idleSecondsCounter;
+            if (counter >= 0) timeoutCounter.innerHTML = counter + "";
+        }
 
     	if (_idleSecondsCounter===IDLE_TIMEOUT_IN_SECONDS && REDIRECT_UPON_TIMEOUT) {
     		redirect();

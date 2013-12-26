@@ -1,6 +1,6 @@
 class TimeoutGrailsPlugin {
     // the plugin version
-    def version = "0.1"
+    def version = "1.0"
     // the version or versions of Grails the plugin is designed for
     def grailsVersion = "2.0 > *"
     // the other plugins this plugin depends on
@@ -11,15 +11,19 @@ class TimeoutGrailsPlugin {
         "grails-app/views/index.gsp",
         "grails-app/views/logout.gsp",
         "grails-app/views/redirect.gsp",
-        "grails-app/views/layouts/main.gsp"
+        "grails-app/views/layouts/main.gsp",
+        "grails-app/i18n/messages.properties",
+        "src/templates/**",
+        "web-app/css/**",
+        "web-app/images/**",
+        "web-app/js/application.js"
     ]
 
-    // TODO Fill in these fields
-    def title = "Grails Timeout Plugin" // Headline display name of the plugin
+    def title = "Grails Timeout Plugin - Warns User for Session Timeout" // Headline display name of the plugin
     def author = "Lim Chee Kin"
     def authorEmail = "limcheekin@vobject.com"
     def description = '''\
-Brief summary/description of the plugin.
+The plugin enabled the web application prompts a message box prior to session timeout.
 '''
 
     // URL to the plugin's documentation

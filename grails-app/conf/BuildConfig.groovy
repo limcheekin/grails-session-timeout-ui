@@ -29,12 +29,9 @@ grails.project.dependency.resolution = {
     }
 
     plugins {
-        build ":tomcat:$grailsVersion"
         runtime ':gsp-resources:0.4.4'
-        runtime ":jquery-ui:1.10.3"
+        //runtime ":jquery-ui:1.10.3"
 
-        build ':release:2.2.1', ':rest-client-builder:1.0.3', {
-            export = false
-        }
+        build ":release:3.0.1"
     }
 }
