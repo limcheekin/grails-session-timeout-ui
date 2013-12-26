@@ -63,7 +63,7 @@ Add timeout module to your GSP:
 That's all, no coding required.
 
 ### jQuery UI Message Box
-Add timeout module to your GSP:
+Add jquery, jquery-ui and timeout modules to your GSP:
 ```xml
 <r:require modules="jquery, jquery-ui, timeout" />
 ```
