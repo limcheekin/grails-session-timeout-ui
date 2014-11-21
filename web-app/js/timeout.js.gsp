@@ -41,18 +41,22 @@ var grailsTimeout = (function (grailsTimeout) {
 	var _idleSecondsCounter = 0;
 
 	var title = "${message(code: 'timeout.title', default: 'WARNING')}";
-	var message = "${message(code: 'timeout.message', default: "Your session will expire in ${ALERT_ON_SECONDS_BEFORE_TIMEOUT} seconds starting from ${CURRENT_TIME_PLACEHOLDER}.\n\nPress OK to continue, or Cancel to logout.", args:[ALERT_ON_SECONDS_BEFORE_TIMEOUT, CURRENT_TIME_PLACEHOLDER]).encodeAsJavaScript()}";
+	var messageTemplate = "${message(code: 'timeout.message', default: "Your session will expire in ${ALERT_ON_SECONDS_BEFORE_TIMEOUT} seconds starting from ${CURRENT_TIME_PLACEHOLDER}.\n\nPress OK to continue, or Cancel to logout.", args:[ALERT_ON_SECONDS_BEFORE_TIMEOUT, CURRENT_TIME_PLACEHOLDER]).encodeAsJavaScript()}";
 	var okButtonLabel = "${message(code: 'timeout.ok.button.label', default: 'OK')}";
 	var cancelButtonLabel = "${message(code: 'timeout.cancel.button.label', default: 'Cancel')}";
+    var message;
 
-	
+    <g:if test="${grailsApplication.config.timeout.resetCounterOnClick}">
 	document.onclick = function() {
     	_idleSecondsCounter = 0;
 	};
+    </g:if>
 
+    <g:if test="${grailsApplication.config.timeout.resetCounterOnKeyPress}">
 	document.onkeypress = function() {
     	_idleSecondsCounter = 0;
 	};
+    </g:if>
 	
 	window.setInterval(checkIdleTime, 1000);
 
@@ -60,7 +64,7 @@ var grailsTimeout = (function (grailsTimeout) {
     	_idleSecondsCounter++;
 
     	if (_idleSecondsCounter===ALERT_ON_COUNTER) {
-    		message = message.replace("${CURRENT_TIME_PLACEHOLDER}", getCurrentTimeInHHMMSSFormat());
+    		message = messageTemplate.replace("${CURRENT_TIME_PLACEHOLDER}", getCurrentTimeInHHMMSSFormat());
     		window.focus();
         	grailsTimeout.showAlert();
     	}
@@ -72,7 +76,7 @@ var grailsTimeout = (function (grailsTimeout) {
         }
 
     	if (_idleSecondsCounter===IDLE_TIMEOUT_IN_SECONDS && REDIRECT_UPON_TIMEOUT) {
-    		redirect();
+    		timeout();
     	}
     }
 
@@ -91,16 +95,74 @@ var grailsTimeout = (function (grailsTimeout) {
 
 	function redirect() {
 	    if (REDIRECT_URL != '') {
-        	window.location = REDIRECT_URL;
+        	//window.location = REDIRECT_URL;
+            sendAjaxRequest(REDIRECT_URL);
 		} else {
-			window.location = window.location.pathname;
+			//window.location = window.location.pathname;
+            sendAjaxRequest(window.location.pathname);
         }		
 	}
 
+    function timeout() {
+        if (REDIRECT_URL != '') {
+            window.location = REDIRECT_URL;
+        } else {
+            window.location = window.location.pathname;
+        }       
+    }    
+
 	function logout() {
 		window.location = LOGOUT_URL; 
-	}	
+	}
 
+    function sendAjaxRequest(url) {
+        //alert ('sendAjaxRequest');
+        _idleSecondsCounter = 0;
+        var ajaxRequest;  // The variable that makes Ajax possible!
+        
+        try{
+            // Opera 8.0+, Firefox, Safari
+            ajaxRequest = new XMLHttpRequest();
+        } catch (e){
+            // Internet Explorer Browsers
+            try{
+                ajaxRequest = new ActiveXObject("Msxml2.XMLHTTP");
+            } catch (e) {
+                try{
+                    ajaxRequest = new ActiveXObject("Microsoft.XMLHTTP");
+                } catch (e) {
+                    // Something went wrong
+                    alert("Your browser doesn't support AJAX!");
+                    return false;
+                }
+            }
+        }
+        // Create a function that will receive data sent from the server
+        ajaxRequest.onreadystatechange = function() {
+            if(ajaxRequest.readyState == 4) { // The request is complete
+                // alert("response status = " + ajaxRequest.status);
+                // alert(ajaxRequest.responseText);
+                // refresh the screen if AJAX request failed
+                if (ajaxRequest.status != 200) 
+                    window.location = url;
+            }
+        }
+
+        url = addTimestampToURL(url);
+        ajaxRequest.open("GET", url, true);
+        ajaxRequest.send(); 
+    } 
+
+    // For IE 8
+    function addTimestampToURL(url) {
+        var current = new Date();
+        if (url.lastIndexOf("?") > -1) {
+            url += "&" + current;
+        } else {
+            url += "?" + current;
+        }
+        return url; 
+    }   	
 <g:if test="${hasJQueryUiPlugin || grailsApplication.config.timeout.hasJQueryUi}">
 	function showJQueryUiAlert() {
         message = message.replace(/\r\n|\n/g, '<br />'); 
