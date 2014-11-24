@@ -35,7 +35,7 @@ You need the add the following line of configuration to `grails-app/conf/Config.
 ```groovy
 session.timeout.ui.maxInactiveInterval = n * 60 // in seconds
 ```
-You are right! The configuration above is to define interval of session timeout which equivalents to `session.maxInactiveInterval`, you need to configure it simply because I am unable to make `session.maxInactiveInterval` work with [GSP Resources](http://grails.org/plugin/gsp-resources) plugin. The value of `session.maxInactiveInterval` always equals to `0` in gsp resources. If you know the solution, I'm very appreciate if you could share it [here](https://github.com/limcheekin/grails-timeout/issues). 
+You are right! The configuration above is to define interval of session timeout which equivalents to `session.maxInactiveInterval`, you need to configure it simply because I am unable to make `session.maxInactiveInterval` work with [GSP Resources](http://grails.org/plugin/gsp-resources) plugin. The value of `session.maxInactiveInterval` always equals to `0` in gsp resources. If you know the solution, I'm very appreciate if you could share it [here](https://github.com/limcheekin/grails-session-timeout-ui/issues). 
 
 `n` is the value you specified in the following configuration of the `web.xml` file:
 ```xml
