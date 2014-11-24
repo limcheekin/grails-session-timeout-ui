@@ -23,36 +23,36 @@ http://stackoverflow.com/questions/13246378/detecting-user-inactivity-over-a-bro
 http://stackoverflow.com/questions/17776940/javascript-module-pattern-with-example
 --%>
 <% 
-if (!grailsApplication.config.timeout.maxInactiveInterval) {
-    throw new RuntimeException('timeout.maxInactiveInterval is not configured! Please configure it in Config.groovy file.')
+if (!grailsApplication.config.session.timeout.ui.maxInactiveInterval) {
+    throw new RuntimeException('session.timeout.ui.maxInactiveInterval is not configured! Please configure it in Config.groovy file.')
 }
 %>
 <g:set var="hasJQueryUiPlugin" value="${grailsApplication.mainContext.pluginManager.hasGrailsPlugin('jquery-ui')}" />
-<g:set var="CURRENT_TIME_PLACEHOLDER" value="${grailsApplication.config.timeout.currentTimePlaceholder?:'[[[currentTimePlaceholder]]]'}" />
-<g:set var="ALERT_ON_SECONDS_BEFORE_TIMEOUT" value="${grailsApplication.config.timeout.alertOnSecondsBeforeTimeout?:30}" />
+<g:set var="CURRENT_TIME_PLACEHOLDER" value="${grailsApplication.config.session.timeout.ui.currentTimePlaceholder?:'[[[currentTimePlaceholder]]]'}" />
+<g:set var="ALERT_ON_SECONDS_BEFORE_TIMEOUT" value="${grailsApplication.config.session.timeout.ui.alertOnSecondsBeforeTimeout?:30}" />
 
 var grailsTimeout = (function (grailsTimeout) {
-	var IDLE_TIMEOUT_IN_SECONDS = ${grailsApplication.config.timeout.maxInactiveInterval}; 
+	var IDLE_TIMEOUT_IN_SECONDS = ${grailsApplication.config.session.timeout.ui.maxInactiveInterval}; 
 	var ALERT_ON_SECONDS_BEFORE_TIMEOUT = ${ALERT_ON_SECONDS_BEFORE_TIMEOUT};
 	var ALERT_ON_COUNTER = IDLE_TIMEOUT_IN_SECONDS - ALERT_ON_SECONDS_BEFORE_TIMEOUT;
-	var REDIRECT_UPON_TIMEOUT = ${grailsApplication.config.timeout.get("redirectUponTimeout", true)};
-	var REDIRECT_URL = "${grailsApplication.config.timeout.redirectUrl?:''}";
-	var LOGOUT_URL = "${grailsApplication.config.timeout.logoutUrl?:'../logout'}";
+	var REDIRECT_UPON_TIMEOUT = ${grailsApplication.config.session.timeout.ui.get("redirectUponTimeout", true)};
+	var REDIRECT_URL = "${grailsApplication.config.session.timeout.ui.redirectUrl?:''}";
+	var LOGOUT_URL = "${grailsApplication.config.session.timeout.ui.logoutUrl?:'../logout'}";
 	var _idleSecondsCounter = 0;
 
-	var title = "${message(code: 'timeout.title', default: 'WARNING')}";
-	var messageTemplate = "${message(code: 'timeout.message', default: "Your session will expire in ${ALERT_ON_SECONDS_BEFORE_TIMEOUT} seconds starting from ${CURRENT_TIME_PLACEHOLDER}.\n\nPress OK to continue, or Cancel to logout.", args:[ALERT_ON_SECONDS_BEFORE_TIMEOUT, CURRENT_TIME_PLACEHOLDER]).encodeAsJavaScript()}";
-	var okButtonLabel = "${message(code: 'timeout.ok.button.label', default: 'OK')}";
-	var cancelButtonLabel = "${message(code: 'timeout.cancel.button.label', default: 'Cancel')}";
+	var title = "${message(code: 'session.timeout.ui.title', default: 'WARNING')}";
+	var messageTemplate = "${message(code: 'session.timeout.ui.message', default: "Your session will expire in ${ALERT_ON_SECONDS_BEFORE_TIMEOUT} seconds starting from ${CURRENT_TIME_PLACEHOLDER}.\n\nPress OK to continue, or Cancel to logout.", args:[ALERT_ON_SECONDS_BEFORE_TIMEOUT, CURRENT_TIME_PLACEHOLDER]).encodeAsJavaScript()}";
+	var okButtonLabel = "${message(code: 'session.timeout.ui.ok.button.label', default: 'OK')}";
+	var cancelButtonLabel = "${message(code: 'session.timeout.ui.cancel.button.label', default: 'Cancel')}";
     var message;
 
-    <g:if test="${grailsApplication.config.timeout.resetCounterOnClick}">
+    <g:if test="${grailsApplication.config.session.timeout.ui.resetCounterOnClick}">
 	document.onclick = function() {
     	_idleSecondsCounter = 0;
 	};
     </g:if>
 
-    <g:if test="${grailsApplication.config.timeout.resetCounterOnKeyPress}">
+    <g:if test="${grailsApplication.config.session.timeout.ui.resetCounterOnKeyPress}">
 	document.onkeypress = function() {
     	_idleSecondsCounter = 0;
 	};
@@ -163,7 +163,7 @@ var grailsTimeout = (function (grailsTimeout) {
         }
         return url; 
     }   	
-<g:if test="${hasJQueryUiPlugin || grailsApplication.config.timeout.hasJQueryUi}">
+<g:if test="${hasJQueryUiPlugin || grailsApplication.config.session.timeout.ui.hasJQueryUi}">
 	function showJQueryUiAlert() {
         message = message.replace(/\r\n|\n/g, '<br />'); 
         var dialog = '<div class="timeoutDialog" title="' + title + '">' + '<p>' + message + '</p></div>';
