@@ -26,7 +26,7 @@ plugins {
     // . . .
     // . . .
 
-	runtime ':timeout:latest.version' 
+	runtime ':session-timeout-ui:latest.version' 
 }
 ```
 
