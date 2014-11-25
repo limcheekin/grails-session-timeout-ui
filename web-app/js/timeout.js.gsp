@@ -94,11 +94,9 @@ var grailsTimeout = (function (grailsTimeout) {
 	}
 
 	function redirect() {
-	    if (REDIRECT_URL != '') {
-        	//window.location = REDIRECT_URL;
+        if (REDIRECT_URL != '') {
             sendAjaxRequest(REDIRECT_URL);
-		} else {
-			//window.location = window.location.pathname;
+        } else {
             sendAjaxRequest(window.location.pathname);
         }		
 	}
@@ -155,15 +153,19 @@ var grailsTimeout = (function (grailsTimeout) {
 
     // For IE 8
     function addTimestampToURL(url) {
-        var current = new Date();
+        var currentTime = new Date().getTime();
         if (url.lastIndexOf("?") > -1) {
-            url += "&" + current;
+            url += "&" + currentTime;
         } else {
-            url += "?" + current;
+            url += "?" + currentTime;
         }
         return url; 
     }   	
 <g:if test="${hasJQueryUiPlugin || grailsApplication.config.session.timeout.ui.hasJQueryUi}">
+    $(document).ajaxSend(function() { // reset counter for any ajax request
+        _idleSecondsCounter = 0;
+    });
+
 	function showJQueryUiAlert() {
         message = message.replace(/\r\n|\n/g, '<br />'); 
         var dialog = '<div class="timeoutDialog" title="' + title + '">' + '<p>' + message + '</p></div>';
