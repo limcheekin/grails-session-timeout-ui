@@ -4,7 +4,3 @@ log4j = {
           'org.hibernate',
           'net.sf.ehcache.hibernate'
 }
-
-timeout.alertOnSecondsBeforeTimeout = 45
-timeout.redirectUponTimeout = false
-timeout.maxInactiveInterval = 60
