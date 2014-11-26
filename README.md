@@ -92,5 +92,5 @@ session.timeout.ui.cancel.button.label=Logout
 Kindly check out the [session-timeout-ui-demo](http://github.com/limcheekin/grails-session-timeout-ui-demo) application on how I use the plugin with [Spring Security Core](http://grails.org/plugin/spring-security-core) plugin.
 
 ## Version History
-###1.0 dd-MMM-yyyy###
+###1.0 26-Nov-2014###
 * Initial implementation with browsers' standard message box and JQuery UI message box support.

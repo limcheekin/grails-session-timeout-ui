@@ -6,5 +6,5 @@
 /.settings
 /target
 /plugin.xml
-/grails-timeout-ui-*.zip
-/grails-timeout-ui-*.zip.sha1
+/grails-session-timeout-ui-*.zip
+/grails-session-timeout-ui-*.zip.sha1
